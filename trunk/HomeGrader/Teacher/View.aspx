@@ -27,7 +27,8 @@
         <br />
         Semester:
         <asp:ListBox ID="DropDownList3" runat="server" AutoPostBack="True" 
-            SelectionMode="Multiple">
+            SelectionMode="Multiple" 
+            onselectedindexchanged="DropDownList3_SelectedIndexChanged">
         </asp:ListBox>
         <br />
         <br />
@@ -36,7 +37,14 @@
             SelectionMode="Multiple"></asp:ListBox>
         <br />
         <br />
-        <asp:Button ID="Button1" runat="server" Text="View" />
+        <asp:Button ID="Button1" runat="server" Text="View" onclick="Button1_Click" />
+    
+        <br />
+        <br />
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+        <br />
+        <asp:GridView ID="GridView1" runat="server">
+        </asp:GridView>
     
     </div>
     </form>
