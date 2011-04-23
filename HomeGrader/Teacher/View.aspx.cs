@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using System.Data;
 
 public partial class Teacher_View : System.Web.UI.Page
 {
@@ -42,7 +43,7 @@ public partial class Teacher_View : System.Web.UI.Page
         SqlDataReader r = cmd.ExecuteReader();
         DropDownList2.DataSource = r;
         DropDownList2.DataTextField = "Year";
-        DropDownList2.DataValueField = "id";
+        DropDownList2.DataValueField = "Year";
         DropDownList2.DataBind();
         r.Close();
         connection.Close();
@@ -55,5 +56,45 @@ public partial class Teacher_View : System.Web.UI.Page
         DropDownList3.Items.Insert(1, new ListItem("Fall", "Fall"));
         DropDownList3.Items.Insert(2, new ListItem("Spring", "Spring"));
         DropDownList3.SelectedIndex = 0;
+    }
+    protected void DropDownList3_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        String cmdStr = "SELECT Classes.Title, Classes.id FROM Classes, Assignments WHERE Classes.id = Assignments.CID AND (1 = 2 ";
+
+        foreach (ListItem li in DropDownList2.Items)
+        {
+            if (li.Selected == true)
+            {
+                cmdStr = cmdStr + "OR Classes.Year = '" + li.Value.ToString() + "' ";
+            }
+        }
+
+        cmdStr = cmdStr + ") AND (1=2 ";
+
+        foreach (ListItem li in DropDownList3.Items)
+        {
+            if (li.Selected == true)
+            {
+                cmdStr = cmdStr + "OR Classes.Semester = '" + li.Value.ToString() + "' ";
+            }
+        }
+
+        cmdStr = cmdStr + ")";
+
+        System.Diagnostics.Debug.WriteLine(cmdStr);
+        SqlCommand cmd = new SqlCommand(cmdStr, connection);
+
+        connection.Open();
+        SqlDataReader r = cmd.ExecuteReader();
+
+        ListBox1.DataSource = r;
+        ListBox1.DataTextField = "Title";
+        ListBox1.DataValueField = "id";
+        ListBox1.DataBind();
+        connection.Close();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+
     }
 }
